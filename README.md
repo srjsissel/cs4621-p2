@@ -1,4 +1,4 @@
-# cs4621-p1
+# CS4621 Project 1
 
 ## Group members
 - Claire Zhou (xz256@cornell.edu)
