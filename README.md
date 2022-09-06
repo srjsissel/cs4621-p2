@@ -1,9 +1,9 @@
 # cs4621-p1
 
 ## Group members:
-Claire Zhou (xz256@cornell.edu)
-Lingjia Li (ll587@cornell.edu)
-Sissel Sun (rs923@cornell.edu)
+- Claire Zhou (xz256@cornell.edu)
+- Lingjia Li (ll587@cornell.edu)
+- Sissel Sun (rs923@cornell.edu)
 
 ## Framework:
 
