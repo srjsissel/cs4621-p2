@@ -25,21 +25,43 @@ public class MapGenerator : MonoBehaviour {
 
 	public TerrainType[] regions;
 
-	public void GenerateMap() {
-		float[,] noiseMap = Noise.GenerateNoiseMap (mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
+	private void Start() {
+		GenerateMap();
+	}
 
+	public void GenerateMap() {
+		int noiseSeed = Mathf.FloorToInt(Random.value * float.MaxValue);
+		float[,] noiseMap = Noise.GenerateNoiseMap (mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
+		float[,] addNoise = Noise.GenerateNoiseMap (mapWidth, mapHeight, noiseSeed, noiseScale, octaves, persistance, lacunarity, offset);
 		Color[] colourMap = new Color[mapWidth * mapHeight];
 		for (int y = 0; y < mapHeight; y++) {
 			for (int x = 0; x < mapWidth; x++) {
 				float currentHeight = noiseMap [x, y];
 				for (int i = 0; i < regions.Length; i++) {
 					if (currentHeight <= regions [i].height) {
-						colourMap [y * mapWidth + x] = regions [i].colour;
+						Color tempColor = regions [i].colour;
+						if(currentHeight >= regions[0].height){
+							float rnd = Random.value * 2f - 1f;
+							if(rnd < 0.5f){
+								tempColor.r = tempColor.r + rnd*(10f/255f);
+								tempColor.g = tempColor.g + rnd*(10f/255f);
+								tempColor.b = tempColor.b + rnd*(10f/255f);
+							}
+
+							// if( addNoise[x,y]>0.7){
+							// 	noiseMap[x,y]-=addNoise[x,y]*Random.value;
+							// 	noiseMin = Mathf.Min(noiseMap[x,y],noiseMin);
+							// }
+						}
+						
+						colourMap [y * mapWidth + x] = tempColor;
 						break;
 					}
 				}
 			}
 		}
+		
+		noiseMap = normalize(noiseMap);
 
 		MapDisplay display = FindObjectOfType<MapDisplay> ();
 		if (drawMode == DrawMode.NoiseMap) {
@@ -49,6 +71,27 @@ public class MapGenerator : MonoBehaviour {
 		} else if (drawMode == DrawMode.Mesh) {
 			display.DrawMesh (MeshGenerator.GenerateTerrainMesh (noiseMap, meshHeightMultiplier, meshHeightCurve), TextureGenerator.TextureFromColourMap (colourMap, mapWidth, mapHeight));
 		}
+	}
+
+	public float[,] normalize(float[,] noiseMap){
+		float min = 0;
+		float max = 1;
+		int mapWidth = noiseMap.GetLength(0);
+		int mapHeight = noiseMap.GetLength(1);
+		for (int y = 0; y < mapHeight; y++) {
+			for (int x = 0; x < mapWidth; x++) {
+				min = Mathf.Min(noiseMap[x,y],min);
+				max = Mathf.Max(noiseMap[x,y],max);
+			}
+		}
+
+		for (int y = 0; y < mapHeight; y++) {
+			for (int x = 0; x < mapWidth; x++) {
+				noiseMap[x,y] =  (noiseMap[x,y] - min)/(max-min);
+			}
+		}
+
+		return noiseMap;
 	}
 
 	void OnValidate() {
