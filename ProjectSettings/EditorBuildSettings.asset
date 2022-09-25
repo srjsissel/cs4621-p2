@@ -4,5 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
-  m_configObjects: {}
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/NoiseMapVR.unity
+    guid: e1d54b1427e8779439867fd976fbdfd8
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: a15a14f282160e64a9f19dd2af1fa92b, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 622b8af3d407bf947ab5dc6fe3ea20c8, type: 2}

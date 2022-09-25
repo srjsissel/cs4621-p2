@@ -1,13 +1,14 @@
 using UnityEngine;
 using System.Collections;
+using static ForestGenerator;
 
 public class MapGenerator : MonoBehaviour {
 
 	public enum DrawMode {NoiseMap, ColourMap, Mesh};
 	public DrawMode drawMode;
 
-	public int mapWidth;
-	public int mapHeight;
+	public int mapWidth = 241;
+	public int mapHeight = 241;
 	public float noiseScale;
 
 	public int octaves;
@@ -26,10 +27,12 @@ public class MapGenerator : MonoBehaviour {
 	public TerrainType[] regions;
 
 	private void Start() {
-		GenerateMap();
+		float[,] heightMap = GenerateMap();
+		ForestGenerator forestGenerator = GameObject.Find("ForestGenerator").GetComponent<ForestGenerator>();
+		forestGenerator.GenerateForest(ref heightMap);
 	}
 
-	public void GenerateMap() {
+	public float[,] GenerateMap() {
 		int noiseSeed = Mathf.FloorToInt(Random.value * float.MaxValue);
 		float[,] noiseMap = Noise.GenerateNoiseMap (mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
 		float[,] addNoise = Noise.GenerateNoiseMap (mapWidth, mapHeight, noiseSeed, noiseScale, octaves, persistance, lacunarity, offset);
@@ -71,6 +74,18 @@ public class MapGenerator : MonoBehaviour {
 		} else if (drawMode == DrawMode.Mesh) {
 			display.DrawMesh (MeshGenerator.GenerateTerrainMesh (noiseMap, meshHeightMultiplier, meshHeightCurve), TextureGenerator.TextureFromColourMap (colourMap, mapWidth, mapHeight));
 		}
+
+		float[,] ans = new float[mapWidth, mapHeight];
+		for (int y = 0; y < mapHeight; y++) {
+			for (int x = 0; x < mapWidth; x++) {
+				ans[x, y] = meshHeightCurve.Evaluate(noiseMap [x, y]) * meshHeightMultiplier;
+				if(noiseMap[x,y]<=regions[1].height){
+					ans[x,y] = -Mathf.Infinity;
+				}
+				
+			}
+		}
+		return ans;
 	}
 
 	public float[,] normalize(float[,] noiseMap){
