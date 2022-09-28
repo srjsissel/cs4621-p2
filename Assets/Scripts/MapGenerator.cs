@@ -6,6 +6,9 @@ public class MapGenerator : MonoBehaviour {
 
 	public enum DrawMode {NoiseMap, ColourMap, Mesh};
 	public DrawMode drawMode;
+	
+	[Range(0, 1)]
+	public float colorSlider = 0.5f;
 
 	public int mapWidth = 241;
 	public int mapHeight = 241;
@@ -26,17 +29,64 @@ public class MapGenerator : MonoBehaviour {
 
 	public TerrainType[] regions;
 
+	float[,] heightMap;
+	Color[] colourMap;
+	Color[] finalColorMap;
+	MapDisplay display;
+	MeshData mesh;
+
 	private void Start() {
-		float[,] heightMap = GenerateMap();
+		heightMap = GenerateMap();
 		ForestGenerator forestGenerator = GameObject.Find("ForestGenerator").GetComponent<ForestGenerator>();
 		forestGenerator.GenerateForest(ref heightMap);
+		
 	}
 
 	public float[,] GenerateMap() {
 		int noiseSeed = Mathf.FloorToInt(Random.value * float.MaxValue);
 		float[,] noiseMap = Noise.GenerateNoiseMap (mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
 		float[,] addNoise = Noise.GenerateNoiseMap (mapWidth, mapHeight, noiseSeed, noiseScale, octaves, persistance, lacunarity, offset);
-		Color[] colourMap = new Color[mapWidth * mapHeight];
+		
+		getMapColor(ref noiseMap, ref addNoise);
+		getFinalMapColor();
+		noiseMap = normalize(noiseMap);
+
+		display = FindObjectOfType<MapDisplay> ();
+		if (drawMode == DrawMode.NoiseMap) {
+			display.DrawTexture (TextureGenerator.TextureFromHeightMap (noiseMap));
+		} else if (drawMode == DrawMode.ColourMap) {
+			display.DrawTexture (TextureGenerator.TextureFromColourMap (finalColorMap, mapWidth, mapHeight));
+		} else if (drawMode == DrawMode.Mesh) {
+			mesh = MeshGenerator.GenerateTerrainMesh (noiseMap, meshHeightMultiplier, meshHeightCurve);
+			display.DrawMesh (mesh, TextureGenerator.TextureFromColourMap (finalColorMap, mapWidth, mapHeight));
+		}
+
+		float[,] ans = new float[mapWidth, mapHeight];
+		for (int y = 0; y < mapHeight; y++) {
+			for (int x = 0; x < mapWidth; x++) {
+				ans[x, y] = meshHeightCurve.Evaluate(noiseMap [x, y]) * meshHeightMultiplier;
+				if(noiseMap[x,y]<=regions[1].height){
+					ans[x,y] = -Mathf.Infinity;
+				}
+				
+			}
+		}
+		return ans;
+	}
+
+
+
+	public void setColor(float newColor){
+		colorSlider = newColor;	
+		getFinalMapColor();
+		display = FindObjectOfType<MapDisplay> ();
+		//display.DrawTexture(TextureGenerator.TextureFromColourMap (finalColorMap, mapWidth, mapHeight));
+		display.DrawMesh (mesh, TextureGenerator.TextureFromColourMap (finalColorMap, mapWidth, mapHeight));
+	}
+
+	void getMapColor(ref float[,] noiseMap, ref float[,] addNoise){
+		if (colourMap == null)
+			colourMap = new Color[mapWidth * mapHeight];
 		for (int y = 0; y < mapHeight; y++) {
 			for (int x = 0; x < mapWidth; x++) {
 				float currentHeight = noiseMap [x, y];
@@ -56,36 +106,22 @@ public class MapGenerator : MonoBehaviour {
 							// 	noiseMin = Mathf.Min(noiseMap[x,y],noiseMin);
 							// }
 						}
-						
 						colourMap [y * mapWidth + x] = tempColor;
 						break;
 					}
 				}
 			}
 		}
-		
-		noiseMap = normalize(noiseMap);
+	}
 
-		MapDisplay display = FindObjectOfType<MapDisplay> ();
-		if (drawMode == DrawMode.NoiseMap) {
-			display.DrawTexture (TextureGenerator.TextureFromHeightMap (noiseMap));
-		} else if (drawMode == DrawMode.ColourMap) {
-			display.DrawTexture (TextureGenerator.TextureFromColourMap (colourMap, mapWidth, mapHeight));
-		} else if (drawMode == DrawMode.Mesh) {
-			display.DrawMesh (MeshGenerator.GenerateTerrainMesh (noiseMap, meshHeightMultiplier, meshHeightCurve), TextureGenerator.TextureFromColourMap (colourMap, mapWidth, mapHeight));
-		}
-
-		float[,] ans = new float[mapWidth, mapHeight];
+	void getFinalMapColor(){
+		if (finalColorMap == null)
+			finalColorMap = new Color[mapWidth * mapHeight];
 		for (int y = 0; y < mapHeight; y++) {
 			for (int x = 0; x < mapWidth; x++) {
-				ans[x, y] = meshHeightCurve.Evaluate(noiseMap [x, y]) * meshHeightMultiplier;
-				if(noiseMap[x,y]<=regions[1].height){
-					ans[x,y] = -Mathf.Infinity;
-				}
-				
+				finalColorMap [y * mapWidth + x] = colourMap [y * mapWidth + x] * (colorSlider + 0.5f);
 			}
 		}
-		return ans;
 	}
 
 	public float[,] normalize(float[,] noiseMap){
