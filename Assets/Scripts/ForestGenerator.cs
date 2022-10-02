@@ -1,17 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ForestGenerator : MonoBehaviour {
+
+    [Range(0, 1)]
+	public float scaleSlider = 1f;
 
     public int forestSize = 241; // Overall size of the forest (a square of forestSize X forestSize).
     public int elementSpacing = 10; // The spacing between element placements. Basically grid size.
 
     public Element[] elements;
 
+    List<GameObject> objectList;
+
+    List<int> objectTypeList;
+
+    List<float> objectOriginalScaleList;
+
+    List<float> objectGrowScaleList;
+
     public Material[] materials;
 
     private void Start() {
+        objectList = new List<GameObject>();
+        objectTypeList = new List<int>();
+        objectOriginalScaleList = new List<float>();
+        objectGrowScaleList = new List<float>();
     }
 
     public void GenerateForest(ref float[,] heightMap){
@@ -30,6 +46,7 @@ public class ForestGenerator : MonoBehaviour {
 
                     // Get the current element.
                     Element element = elements[i];
+                    // Debug.Log(element.name);
                     
                     // Check if the element can be placed.
                     if (element.CanPlace()) {
@@ -60,12 +77,16 @@ public class ForestGenerator : MonoBehaviour {
                         Vector3 position = new Vector3(x, (currentHeight-0.05f*elementHeight)*10, z);
                         Vector3 offset = new Vector3(-(width/2f-0.5f)*10f, 0f, -(height/2f-0.5f)*10f);
                         Vector3 rotation = new Vector3(Random.Range(0, 5f), Random.Range(0, 360f), Random.Range(0, 5f));
-                        Vector3 scale = Vector3.one * Random.Range(3f, 4f);
+                        float scale = Random.Range(3f, 4f);
 
                         // Instantiate and place element in world.
                         GameObject newElement = Instantiate(randomElement);
+                        objectList.Add(newElement);
+                        objectTypeList.Add(i);
+                        objectOriginalScaleList.Add(scale);
+                        objectGrowScaleList.Add(Random.Range(1.3f, 4f));
                         newElement.transform.SetParent(transform);
-                        newElement.transform.localScale = scale;
+                        newElement.transform.localScale = Vector3.one * scale;
                         newElement.transform.eulerAngles = rotation;
                         newElement.transform.position = position + offset;
 
@@ -80,6 +101,7 @@ public class ForestGenerator : MonoBehaviour {
             }
         }
 
+        setScale(scaleSlider);
 
 
         // Loop through all the positions within our forest boundary.
@@ -122,6 +144,32 @@ public class ForestGenerator : MonoBehaviour {
         //         }
         //     }
         // }
+    }
+
+    public void setScale(float newScale){
+        scaleSlider = newScale;
+        for (int i=0; i<objectList.Count; ++i){
+            GameObject o = objectList[i];
+            int oType = objectTypeList[i];
+            float tempScale = newScale;
+            float growScale = objectGrowScaleList[i];
+            // o.transform.localScale = o.transform.localScale * newScale / scaleSlider;
+            if (oType == 0){
+                // o is Tree
+                tempScale = growScale * tempScale - 1f;
+                if (tempScale <= 0){
+                    tempScale = 0f;
+                }
+                if (tempScale > 1){
+                    tempScale = 1f;
+                }
+            }
+            o.transform.localScale = Vector3.one * objectOriginalScaleList[i] * tempScale;
+        }
+        // foreach (GameObject o in objectList){
+        //     o.transform.localScale = o.transform.localScale * newScale / scaleSlider;
+        // }
+        
     }
 
 }
