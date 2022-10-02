@@ -117,9 +117,13 @@ public class MapGenerator : MonoBehaviour {
 	void getFinalMapColor(){
 		if (finalColorMap == null)
 			finalColorMap = new Color[mapWidth * mapHeight];
+		float h, s, v;
+		float sMultiplier = colorSlider * 0.8f + 0.6f;	// 0.6 ~ 1.4
 		for (int y = 0; y < mapHeight; y++) {
 			for (int x = 0; x < mapWidth; x++) {
-				finalColorMap [y * mapWidth + x] = colourMap [y * mapWidth + x] * (colorSlider + 0.5f);
+				Color.RGBToHSV(colourMap[y * mapWidth + x], out h, out s, out v);
+				finalColorMap [y * mapWidth + x] = Color.HSVToRGB(h, s * sMultiplier, v);
+					// colourMap [y * mapWidth + x] * (colorSlider + 0.5f);
 			}
 		}
 	}
