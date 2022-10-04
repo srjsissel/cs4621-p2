@@ -29,24 +29,23 @@ public class MapGenerator : MonoBehaviour {
 
 	public TerrainType[] regions;
 
-	float[,] heightMap;
+	float[,] heightMap, noiseMap, addNoise;
+	int noiseSeed;
 	Color[] colourMap;
 	Color[] finalColorMap;
 	MapDisplay display;
 	MeshData mesh;
 
 	private void Start() {
+		noiseSeed = Mathf.FloorToInt(Random.value * float.MaxValue);
+		noiseMap = Noise.GenerateNoiseMap (mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
+		addNoise = Noise.GenerateNoiseMap (mapWidth, mapHeight, noiseSeed, noiseScale, octaves, persistance, lacunarity, offset);
 		heightMap = GenerateMap();
 		ForestGenerator forestGenerator = GameObject.Find("ForestGenerator").GetComponent<ForestGenerator>();
 		forestGenerator.GenerateForest(ref heightMap);
-		
 	}
 
 	public float[,] GenerateMap() {
-		int noiseSeed = Mathf.FloorToInt(Random.value * float.MaxValue);
-		float[,] noiseMap = Noise.GenerateNoiseMap (mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
-		float[,] addNoise = Noise.GenerateNoiseMap (mapWidth, mapHeight, noiseSeed, noiseScale, octaves, persistance, lacunarity, offset);
-		
 		getMapColor(ref noiseMap, ref addNoise);
 		getFinalMapColor();
 		noiseMap = normalize(noiseMap);
@@ -162,6 +161,13 @@ public class MapGenerator : MonoBehaviour {
 		if (octaves < 0) {
 			octaves = 0;
 		}
+	}
+
+	public void setHeight(float slider){
+		regions[0].height = 0.1f + slider * 0.2f;
+		// display = FindObjectOfType<MapDisplay> ();
+		// display.DrawMesh (mesh, TextureGenerator.TextureFromColourMap (finalColorMap, mapWidth, mapHeight));
+		GenerateMap();
 	}
 }
 
