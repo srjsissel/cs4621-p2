@@ -24,13 +24,18 @@ public class ForestGenerator : MonoBehaviour {
     public Material[] materials;
 
     private void Start() {
+        // objectList = new List<GameObject>();
+        // Debug.Log(" is null? " + (objectList == null));
+        // objectTypeList = new List<int>();
+        // objectOriginalScaleList = new List<float>();
+        // objectGrowScaleList = new List<float>();
+    }
+
+    public void GenerateForest(ref float[,] heightMap){
         objectList = new List<GameObject>();
         objectTypeList = new List<int>();
         objectOriginalScaleList = new List<float>();
         objectGrowScaleList = new List<float>();
-    }
-
-    public void GenerateForest(ref float[,] heightMap){
         // int nForest = Mathf.FloorToInt(Random.Range(50f, 100f));
         int width = heightMap.GetLength(0);
         int height = heightMap.GetLength(1);
