@@ -35,6 +35,7 @@ public class MapGenerator : MonoBehaviour {
 	Color[] finalColorMap;
 	MapDisplay display;
 	MeshData mesh;
+	GameObject waterPlane;
 
 	private void Start() {
 		noiseSeed = Mathf.FloorToInt(Random.value * float.MaxValue);
@@ -42,6 +43,7 @@ public class MapGenerator : MonoBehaviour {
 		addNoise = Noise.GenerateNoiseMap (mapWidth, mapHeight, noiseSeed, noiseScale, octaves, persistance, lacunarity, offset);
 		heightMap = GenerateMap();
 		ForestGenerator forestGenerator = GameObject.Find("ForestGenerator").GetComponent<ForestGenerator>();
+		waterPlane = GameObject.Find("Water Plane");
 		forestGenerator.GenerateForest(ref heightMap);
 	}
 
@@ -168,6 +170,12 @@ public class MapGenerator : MonoBehaviour {
 		// display = FindObjectOfType<MapDisplay> ();
 		// display.DrawMesh (mesh, TextureGenerator.TextureFromColourMap (finalColorMap, mapWidth, mapHeight));
 		GenerateMap();
+	}
+
+	public void setWaterHeight(float slider){
+		//0.1f ~ 2.6f
+		waterPlane.transform.position = waterPlane.transform.position + 
+										new Vector3(0f, -waterPlane.transform.position.y + slider * 5f + 0.5f, 0f);
 	}
 }
 
