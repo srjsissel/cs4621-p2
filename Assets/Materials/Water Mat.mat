@@ -110,8 +110,8 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-    - _WaveAmplitude: 1
-    - _WaveSpeed: 0.5
+    - _WaveAmplitude: 0.2
+    - _WaveSpeed: 1.5
     - _ZWrite: 1
     - _distance: 4
     m_Colors:
