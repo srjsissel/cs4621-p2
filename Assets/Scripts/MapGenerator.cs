@@ -19,6 +19,7 @@ public class MapGenerator : MonoBehaviour {
 	public float persistance;
 	public float lacunarity;
 
+	public bool useFixedSeed;
 	public int seed;
 	public Vector2 offset;
 
@@ -38,7 +39,11 @@ public class MapGenerator : MonoBehaviour {
 	GameObject waterPlane;
 
 	private void Start() {
-		noiseSeed = Mathf.FloorToInt(Random.value * float.MaxValue);
+		Random.InitState((int)System.DateTime.Now.Ticks);
+		noiseSeed = Mathf.FloorToInt(Random.value * int.MaxValue);
+		if (!useFixedSeed){
+			seed = Mathf.FloorToInt(Random.value * int.MaxValue);
+		}
 		noiseMap = Noise.GenerateNoiseMap (mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
 		addNoise = Noise.GenerateNoiseMap (mapWidth, mapHeight, noiseSeed, noiseScale, octaves, persistance, lacunarity, offset);
 		heightMap = GenerateMap();
