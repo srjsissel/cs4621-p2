@@ -41,37 +41,28 @@ public class PlayerController : MonoBehaviour
     }
 
     void flyControl(){
-        if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
-            controller.Move(transform.TransformDirection(new Vector3(speed * 100 * Time.deltaTime, 0, 0)));
-        if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
-            controller.Move(transform.TransformDirection(new Vector3(-speed * 100 * Time.deltaTime, 0, 0)));
-        if(Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
-            controller.Move(transform.TransformDirection(new Vector3(0, 0, -speed * 100 * Time.deltaTime)));
-        if(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
-            controller.Move(transform.TransformDirection(new Vector3(0, 0, speed * 100 * Time.deltaTime)));
+
+        float hInput = Input.GetAxis("Horizontal");
+        float vInput = Input.GetAxis("Vertical");
+
+        Vector3 dir = cam.transform.forward * vInput + cam.transform.right * hInput;
+        player.transform.forward = Vector3.Slerp(player.transform.forward, dir, Time.deltaTime * 20);
+        if(dir != Vector3.zero){
+            controller.Move(player.transform.forward.normalized * speed * 50 * Time.deltaTime);
+        }
     }
 
     void walkControl(){
         controller.Move(new Vector3(0, -gravity * Time.deltaTime, 0));
-        if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)){
-            player.transform.rotation = cam.transform.rotation;
-            controller.Move(transform.TransformDirection(new Vector3(speed * 10 * Time.deltaTime, 0, 0)));
-        }
-        if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)){
-            player.transform.rotation = cam.transform.rotation;
-            controller.Move(transform.TransformDirection(new Vector3(-speed * 10 * Time.deltaTime, 0, 0)));
-        }
-        if(Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)){
-            // player.transform.rotation = cam.transform.rotation;
-            // Vector3 move = transform.TransformDirection(new Vector3(0, 0, -speed * 10 * Time.deltaTime));
-            // controller.Move(move);
-            player.transform.forward = player.transform.forward + new Vector3(0, 0, -speed * 10 * Time.deltaTime);
-            // player.transform.forward = cam.transform.rotation.eulerAngles;
-            controller.Move(transform.TransformDirection(new Vector3(0, 0, speed * 10 * Time.deltaTime)));
-        }
-        if(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)){
-            player.transform.rotation = cam.transform.rotation;
-            controller.Move(transform.TransformDirection(new Vector3(0, 0, speed * 10 * Time.deltaTime)));
+
+        float hInput = Input.GetAxis("Horizontal");
+        float vInput = Input.GetAxis("Vertical");
+
+        Vector3 dir = cam.transform.forward * vInput + cam.transform.right * hInput;
+        player.transform.forward = Vector3.Slerp(player.transform.forward, dir, Time.deltaTime * 20);
+        if(dir != Vector3.zero){
+            player.transform.eulerAngles = Vector3.Scale(player.transform.eulerAngles, new Vector3(0, 1, 1));
+            controller.Move(player.transform.forward.normalized * speed * 10 * Time.deltaTime);
         }
     }
 }
