@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     CharacterController controller;
     Vector2 rotation = Vector2.zero;
 
-    bool isFlying = true;
+    bool isFlying = false;
 	public float speed = 3f;
     public float gravity = 100.0f;
 
@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
         Vector3 dir = cam.transform.forward * vInput + cam.transform.right * hInput;
         player.transform.forward = Vector3.Slerp(player.transform.forward, dir, Time.deltaTime * 20);
         if(dir != Vector3.zero){
-            controller.Move(player.transform.forward.normalized * speed * 50 * Time.deltaTime);
+            controller.Move(player.transform.forward.normalized * speed * 20 * Time.deltaTime);
         }
     }
 
