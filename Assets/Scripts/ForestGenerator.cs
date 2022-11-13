@@ -31,6 +31,24 @@ public class ForestGenerator : MonoBehaviour {
         // objectGrowScaleList = new List<float>();
     }
 
+    public void GrowTree(Vector3 position){
+        GameObject randomElement = elements[0].GetRandom();
+        float elementHeight = randomElement.gameObject.transform.localScale.y;
+        Vector3 rotation = new Vector3(Random.Range(0, 5f), Random.Range(0, 360f), Random.Range(0, 5f));
+        float scale = Random.Range(3f, 4f);
+
+        // Instantiate and place element in world.
+        GameObject newElement = Instantiate(randomElement);
+        objectList.Add(newElement);
+        objectTypeList.Add(0);
+        objectOriginalScaleList.Add(scale);
+        objectGrowScaleList.Add(Random.Range(1.3f, 4f));
+        newElement.transform.SetParent(transform);
+        newElement.transform.localScale = Vector3.one * scale;
+        newElement.transform.eulerAngles = rotation;
+        newElement.transform.position = position;
+    }
+
     public void GenerateForest(ref float[,] heightMap){
         objectList = new List<GameObject>();
         objectTypeList = new List<int>();
