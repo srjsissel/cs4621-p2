@@ -57,6 +57,6 @@ Material:
     - _VertexOffset: 0.07
     m_Colors:
     - _CloudColor: {r: 9.45479, g: 8.208386, b: 16.573124, a: 0.39215687}
-    - _CloudSpeed: {r: 0.005, g: 0.005, b: 0, a: 0}
-    - _DistortSpeed: {r: -0.01, g: 0.005, b: 0, a: 0}
+    - _CloudSpeed: {r: 0.004, g: 0.004, b: 0, a: 0}
+    - _DistortSpeed: {r: -0.008, g: 0.004, b: 0, a: 0}
   m_BuildTextureStacks: []
