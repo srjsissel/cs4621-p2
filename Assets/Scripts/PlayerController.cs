@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
     public enum Control {Fly, Walk, Swim};
     public Control playerControl = Control.Walk;
 
-
     public float speed = 3f;
     public float swimSpeed = 2f;
 
@@ -36,6 +35,7 @@ public class PlayerController : MonoBehaviour
         rayPoint = GameObject.Find("RayPoint");
         player = this.gameObject;
         rayPoint.SetActive(false);
+        
     }
 
     void Update()

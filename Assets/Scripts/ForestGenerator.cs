@@ -13,6 +13,9 @@ public class ForestGenerator : MonoBehaviour {
 
     public Element[] elements;
 
+    public AudioSource music;
+    public AudioClip growTree;
+
     List<GameObject> objectList;
 
     List<int> objectTypeList;
@@ -29,24 +32,31 @@ public class ForestGenerator : MonoBehaviour {
         // objectTypeList = new List<int>();
         // objectOriginalScaleList = new List<float>();
         // objectGrowScaleList = new List<float>();
+        music = this.gameObject.AddComponent<AudioSource>();
+        music.playOnAwake = false;
+        growTree = Resources.Load<AudioClip>("music/click_tree");
     }
 
     public void GrowTree(Vector3 position){
         GameObject randomElement = elements[0].GetRandom();
         float elementHeight = randomElement.gameObject.transform.localScale.y;
         Vector3 rotation = new Vector3(Random.Range(0, 5f), Random.Range(0, 360f), Random.Range(0, 5f));
-        float scale = Random.Range(3f, 4f);
+        float growScale = Random.Range(1.3f, 4f);
+        float scale = getTreeScale(growScale, scaleSlider) * Random.Range(3f, 4f);
 
         // Instantiate and place element in world.
         GameObject newElement = Instantiate(randomElement);
         objectList.Add(newElement);
         objectTypeList.Add(0);
         objectOriginalScaleList.Add(scale);
-        objectGrowScaleList.Add(Random.Range(1.3f, 4f));
+        objectGrowScaleList.Add(growScale);
         newElement.transform.SetParent(transform);
         newElement.transform.localScale = Vector3.one * scale;
         newElement.transform.eulerAngles = rotation;
         newElement.transform.position = position;
+
+        music.clip = growTree;
+        music.Play();
     }
 
     public void GenerateForest(ref float[,] heightMap){
@@ -169,6 +179,17 @@ public class ForestGenerator : MonoBehaviour {
         // }
     }
 
+    float getTreeScale(float growScale, float scaleSlider){
+        float tempScale = growScale * scaleSlider - 1f;
+        if (tempScale <= 0){
+            tempScale = 0f;
+        }
+        if (tempScale > 1){
+            tempScale = 1f;
+        }
+        return tempScale;
+    }
+
     public void setScale(float newScale){
         scaleSlider = newScale;
         for (int i=0; i<objectList.Count; ++i){
@@ -179,13 +200,7 @@ public class ForestGenerator : MonoBehaviour {
             // o.transform.localScale = o.transform.localScale * newScale / scaleSlider;
             if (oType == 0){
                 // o is Tree
-                tempScale = growScale * tempScale - 1f;
-                if (tempScale <= 0){
-                    tempScale = 0f;
-                }
-                if (tempScale > 1){
-                    tempScale = 1f;
-                }
+                tempScale = getTreeScale(growScale, tempScale);
             }
             o.transform.localScale = Vector3.one * objectOriginalScaleList[i] * tempScale;
         }
