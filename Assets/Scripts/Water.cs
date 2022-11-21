@@ -7,7 +7,7 @@ public class Water : MonoBehaviour
     private void OnTriggerEnter(Collider other){
         if (other.CompareTag("Player")) {
             PlayerController controller = other.GetComponent<PlayerController>();
-            controller.playerControl = PlayerController.Control.Swim;
+            controller.playerControl = PlayerController.Control.Swim;            
         }
     }
 

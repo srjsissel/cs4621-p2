@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     public float gravity = 100.0f;
 
     public Camera cam;
-    GameObject player;
+    public GameObject player;
     GameObject waterPlane;
     GameObject rayPoint;
     ForestGenerator forestGenerator;
@@ -90,19 +90,28 @@ public class PlayerController : MonoBehaviour
 
     }
     void swimControl(){
+
         controller.Move(new Vector3(0, -gravity * Time.deltaTime, 0));
 
         float hInput = Input.GetAxis("Horizontal");
         float vInput = Input.GetAxis("Vertical");
-        
+
         Vector3 dir = cam.transform.forward * vInput + cam.transform.right * hInput;
         player.transform.forward = Vector3.Slerp(player.transform.forward, dir, Time.deltaTime * 20);
         if (dir != Vector3.zero)
         {
-            // TODO: Modify swim control after model is chosen
             player.transform.eulerAngles = Vector3.Scale(player.transform.eulerAngles, new Vector3(0, 1, 1));
-            controller.Move(player.transform.forward.normalized * swimSpeed * 10 * Time.deltaTime);
+            controller.Move(player.transform.forward.normalized * speed * 10 * Time.deltaTime);
         }
+
+        player.transform.rotation = Quaternion.Euler(new Vector3(90, player.transform.rotation.eulerAngles.y, player.transform.rotation.eulerAngles.z));
+        
+        //会出不去？
+        // float myY = player.transform.position.y - 3;
+        // if(myY<=0){
+        //     myY = 0;
+        // }
+        // player.transform.position = new Vector3(player.transform.position.x, myY, player.transform.position.z);
     }
 
     void flyControl()
