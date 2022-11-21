@@ -522,7 +522,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &296849855
 GameObject:
@@ -5599,7 +5599,7 @@ Transform:
   - {fileID: 1447346961}
   - {fileID: 1946831852}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &399900892
 GameObject:
@@ -6156,7 +6156,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2475037347874979584, guid: 18b52b718e1a7a94aaabebecee08716b, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2475037347874979584, guid: 18b52b718e1a7a94aaabebecee08716b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6433,7 +6433,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1686854288}
+        m_TargetAssemblyTypeName: RainToggle, Assembly-CSharp
+        m_MethodName: toggle
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1001 &769712064
 PrefabInstance:
@@ -6866,7 +6878,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 4f1994f65885f4a768b84766ae8af2fd, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4f1994f65885f4a768b84766ae8af2fd, type: 3}
       propertyPath: m_LocalScale.x
@@ -7051,7 +7063,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1026131201
 MonoBehaviour:
@@ -7463,7 +7475,7 @@ PrefabInstance:
       objectReference: {fileID: 5235203037717158988, guid: d8db7de6c920f3f49b4aac1cdc69272b, type: 3}
     - target: {fileID: 5934948277185298043, guid: 7bf007dac3a4bdb4882d805039f5933a, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 5934948277185298043, guid: 7bf007dac3a4bdb4882d805039f5933a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7588,7 +7600,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1218685142
 GameObject:
@@ -7928,7 +7940,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1299179130
 MonoBehaviour:
@@ -8306,7 +8318,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1388838691
 MeshCollider:
@@ -9007,6 +9019,25 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1674021266}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1686854285 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7694730643539741380, guid: 42aae62f4cb7d46eeb3a8b5ebb5419bf, type: 3}
+  m_PrefabInstance: {fileID: 2132058031}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1686854288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686854285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e70a4154a722347894ea78689fbe9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  music: {fileID: 0}
+  rainSfx: {fileID: 0}
 --- !u!1 &1762824949
 GameObject:
   m_ObjectHideFlags: 3
@@ -9186,7 +9217,7 @@ Transform:
   m_Children:
   - {fileID: 1847403027}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 42.768, z: 0}
 --- !u!143 &1767040697
 CharacterController:
@@ -9753,7 +9784,7 @@ RectTransform:
   - {fileID: 1882380619}
   - {fileID: 736905096}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -9959,7 +9990,7 @@ Transform:
   - {fileID: 1674021267}
   - {fileID: 721507070}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2114849390 stripped
 MonoBehaviour:
@@ -10145,7 +10176,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &2125227720
 Rigidbody:
@@ -10468,5 +10499,5 @@ Transform:
   - {fileID: 1443537459}
   - {fileID: 1390375477}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
