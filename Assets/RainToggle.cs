@@ -8,6 +8,7 @@ public class RainToggle : MonoBehaviour
 
     public AudioSource music;
     public AudioClip rainSfx;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +22,7 @@ public class RainToggle : MonoBehaviour
     }
 
     public void toggle(bool isRain){
+        CloudSlider.addRain(isRain);
         if (isRain){
             rain.Play();
             music.clip = rainSfx;

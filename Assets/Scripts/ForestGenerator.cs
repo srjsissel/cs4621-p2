@@ -38,22 +38,38 @@ public class ForestGenerator : MonoBehaviour {
     }
 
     public void GrowTree(Vector3 position){
-        GameObject randomElement = elements[0].GetRandom();
-        float elementHeight = randomElement.gameObject.transform.localScale.y;
+        GameObject randomElement;
+        // float elementHeight = randomElement.gameObject.transform.localScale.y;
         Vector3 rotation = new Vector3(Random.Range(0, 5f), Random.Range(0, 360f), Random.Range(0, 5f));
         float growScale = Random.Range(1.3f, 4f);
         float scale = getTreeScale(growScale, scaleSlider) * Random.Range(3f, 4f);
+        if (scale <= 0.1f){
+            randomElement = elements[1].GetRandom();
+            GameObject newElement = Instantiate(randomElement);
+            objectList.Add(newElement);
+            objectTypeList.Add(0);
+            objectOriginalScaleList.Add(5f);
+            objectGrowScaleList.Add(10f);
+            newElement.transform.SetParent(transform);
+            newElement.transform.localScale = Vector3.one * scale;
+            newElement.transform.eulerAngles = rotation;
+            newElement.transform.position = position;
+
+        } else {
+            randomElement = elements[0].GetRandom();
+            GameObject newElement = Instantiate(randomElement);
+            objectList.Add(newElement);
+            objectTypeList.Add(0);
+            objectOriginalScaleList.Add(scale);
+            objectGrowScaleList.Add(growScale);
+            newElement.transform.SetParent(transform);
+            newElement.transform.localScale = Vector3.one * scale;
+            newElement.transform.eulerAngles = rotation;
+            newElement.transform.position = position;
+        } 
 
         // Instantiate and place element in world.
-        GameObject newElement = Instantiate(randomElement);
-        objectList.Add(newElement);
-        objectTypeList.Add(0);
-        objectOriginalScaleList.Add(scale);
-        objectGrowScaleList.Add(growScale);
-        newElement.transform.SetParent(transform);
-        newElement.transform.localScale = Vector3.one * scale;
-        newElement.transform.eulerAngles = rotation;
-        newElement.transform.position = position;
+
 
         music.clip = growTree;
         music.Play();
