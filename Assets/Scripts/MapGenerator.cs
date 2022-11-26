@@ -48,8 +48,10 @@ public class MapGenerator : MonoBehaviour {
 		addNoise = Noise.GenerateNoiseMap (mapWidth, mapHeight, noiseSeed, noiseScale, octaves, persistance, lacunarity, offset);
 		heightMap = GenerateMap();
 		ForestGenerator forestGenerator = GameObject.Find("ForestGenerator").GetComponent<ForestGenerator>();
+		AnimalGenerator animalGenerator = GameObject.Find("AnimalGenerator").GetComponent<AnimalGenerator>();
 		waterPlane = GameObject.Find("Water Plane");
 		forestGenerator.GenerateForest(ref heightMap);
+		animalGenerator.GenerateAnimals(ref heightMap);
 	}
 
 	public float[,] GenerateMap() {
