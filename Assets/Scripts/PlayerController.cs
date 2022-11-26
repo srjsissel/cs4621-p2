@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 
     public enum Control {Fly, Walk, Swim};
     public Control playerControl = Control.Walk;
+    private Animator anim;
 
     public float speed = 3f;
     public float swimSpeed = 2f;
@@ -34,6 +35,7 @@ public class PlayerController : MonoBehaviour
     {
         thirdPersonCam.SetActive(true);
         flyCam.SetActive(false);
+        anim = gameObject.GetComponentsInChildren<Animator>()[0];
         controller = gameObject.GetComponent<CharacterController>();
         forestGenerator = GameObject.Find("ForestGenerator").GetComponent<ForestGenerator>();
         waterPlane = GameObject.Find("Water Plane");
@@ -91,10 +93,12 @@ public class PlayerController : MonoBehaviour
             Cursor.visible = false;
             if (Input.GetKeyDown(KeyCode.Space)){
                 if (playerControl == Control.Fly){
+                    anim.SetTrigger("normal");
                     playerControl = Control.Walk;
                 } else {
+                    anim.SetTrigger("fly");
                     playerControl = Control.Fly;
-                    controller.Move(new Vector3(0, 5f, 0));
+                    controller.Move(new Vector3(0, 10f, 0));
                 }
             }
             thirdPersonCam.SetActive(playerControl == Control.Walk || playerControl == Control.Swim);
@@ -123,7 +127,7 @@ public class PlayerController : MonoBehaviour
             controller.Move(player.transform.forward.normalized * speed * 10 * Time.deltaTime);
         }
 
-        player.transform.rotation = Quaternion.Euler(new Vector3(90, player.transform.rotation.eulerAngles.y, player.transform.rotation.eulerAngles.z));
+        // player.transform.rotation = Quaternion.Euler(new Vector3(90, player.transform.rotation.eulerAngles.y, player.transform.rotation.eulerAngles.z));
         
         //会出不去？
         // float myY = player.transform.position.y - 3;
@@ -135,7 +139,6 @@ public class PlayerController : MonoBehaviour
 
     void flyControl()
     {
-
         float hInput = Input.GetAxis("Horizontal");
         float vInput = Input.GetAxis("Vertical");
 
