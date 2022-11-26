@@ -70,7 +70,7 @@ public class ForestGenerator : MonoBehaviour {
 
         // Instantiate and place element in world.
 
-        StartCoroutine(Scale(newElement, scale));
+        StartCoroutine(Scale(newElement, scale * scaleSlider));
         music.clip = growTree;
         music.Play();
     }
