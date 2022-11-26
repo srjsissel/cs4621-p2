@@ -46,6 +46,8 @@ public class MapGenerator : MonoBehaviour {
 		}
 		noiseMap = Noise.GenerateNoiseMap (mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
 		addNoise = Noise.GenerateNoiseMap (mapWidth, mapHeight, noiseSeed, noiseScale, octaves, persistance, lacunarity, offset);
+		noiseMap = normalize(noiseMap);
+		noiseMap = addFalloff(noiseMap);
 		heightMap = GenerateMap();
 		ForestGenerator forestGenerator = GameObject.Find("ForestGenerator").GetComponent<ForestGenerator>();
 		AnimalGenerator animalGenerator = GameObject.Find("AnimalGenerator").GetComponent<AnimalGenerator>();
@@ -57,7 +59,6 @@ public class MapGenerator : MonoBehaviour {
 	public float[,] GenerateMap() {
 		getMapColor(ref noiseMap, ref addNoise);
 		getFinalMapColor();
-		noiseMap = normalize(noiseMap);
 
 		display = FindObjectOfType<MapDisplay> ();
 		if (drawMode == DrawMode.NoiseMap) {
@@ -156,6 +157,25 @@ public class MapGenerator : MonoBehaviour {
 
 		return noiseMap;
 	}
+
+	float[,] addFalloff(float[,] noiseMap){
+		for (int y = 0; y < mapHeight; y++) {
+			for (int x = 0; x < mapWidth; x++) {
+				float xFalloff = (float) x / (float) mapWidth * 2f - 1;
+				float yFalloff = (float) y / (float) mapHeight * 2f - 1;
+				noiseMap [x, y] -= evaluateFalloff(Mathf.Max(Mathf.Abs(xFalloff), Mathf.Abs(yFalloff)));
+			}
+		}
+		return noiseMap;
+	}
+
+	static float evaluateFalloff(float value){
+		float a = 3f;
+		float b = 2.2f;
+
+		return Mathf.Pow(value, a) / (Mathf.Pow(value, a) + Mathf.Pow(b - b * value, a));
+	}
+
 
 	void OnValidate() {
 		if (mapWidth < 1) {

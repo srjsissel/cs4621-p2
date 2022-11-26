@@ -38,25 +38,56 @@ public class ForestGenerator : MonoBehaviour {
     }
 
     public void GrowTree(Vector3 position){
-        GameObject randomElement = elements[0].GetRandom();
-        float elementHeight = randomElement.gameObject.transform.localScale.y;
+        GameObject randomElement, newElement;
+        // float elementHeight = randomElement.gameObject.transform.localScale.y;
         Vector3 rotation = new Vector3(Random.Range(0, 5f), Random.Range(0, 360f), Random.Range(0, 5f));
         float growScale = Random.Range(1.3f, 4f);
         float scale = getTreeScale(growScale, scaleSlider) * Random.Range(3f, 4f);
+        if (scale <= 0.1f){
+            randomElement = elements[1].GetRandom();
+            newElement = Instantiate(randomElement);
+            objectList.Add(newElement);
+            objectTypeList.Add(0);
+            objectOriginalScaleList.Add(5f);
+            objectGrowScaleList.Add(10f);
+            newElement.transform.SetParent(transform);
+            newElement.transform.localScale = Vector3.zero;
+            newElement.transform.eulerAngles = rotation;
+            newElement.transform.position = position;
+
+        } else {
+            randomElement = elements[0].GetRandom();
+            newElement = Instantiate(randomElement);
+            objectList.Add(newElement);
+            objectTypeList.Add(0);
+            objectOriginalScaleList.Add(scale);
+            objectGrowScaleList.Add(growScale);
+            newElement.transform.SetParent(transform);
+            newElement.transform.localScale = Vector3.zero;
+            newElement.transform.eulerAngles = rotation;
+            newElement.transform.position = position;
+        } 
 
         // Instantiate and place element in world.
-        GameObject newElement = Instantiate(randomElement);
-        objectList.Add(newElement);
-        objectTypeList.Add(0);
-        objectOriginalScaleList.Add(scale);
-        objectGrowScaleList.Add(growScale);
-        newElement.transform.SetParent(transform);
-        newElement.transform.localScale = Vector3.one * scale;
-        newElement.transform.eulerAngles = rotation;
-        newElement.transform.position = position;
 
+        StartCoroutine(Scale(newElement, scale * scaleSlider));
         music.clip = growTree;
         music.Play();
+    }
+
+    IEnumerator Scale(GameObject element, float maxSize){
+        float timer = 0;
+ 
+        // we scale all axis, so they will have the same value, 
+        // so we can work with a float instead of comparing vectors
+        while(maxSize > element.transform.localScale.x)
+        {
+            if (element.transform.localScale.x > maxSize)
+                break;
+            timer += Time.deltaTime;
+            element.transform.localScale += new Vector3(1, 1, 1) * Time.deltaTime * 1.5f;
+            yield return null;
+        }
     }
 
     public void GenerateForest(ref float[,] heightMap){

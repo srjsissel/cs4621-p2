@@ -24,6 +24,11 @@ public class PlayerController : MonoBehaviour
     public GameObject thirdPersonCam;
     public GameObject flyCam;
 
+    public Material rayPointActive, rayPointInactive;
+
+    public AudioSource music;
+    public AudioClip error;
+
 
     void Start()
     {
@@ -35,7 +40,9 @@ public class PlayerController : MonoBehaviour
         rayPoint = GameObject.Find("RayPoint");
         player = this.gameObject;
         rayPoint.SetActive(false);
-        
+        music = this.gameObject.AddComponent<AudioSource>();
+        music.playOnAwake = false;
+        error = Resources.Load<AudioClip>("music/error");
     }
 
     void Update()
@@ -53,13 +60,25 @@ public class PlayerController : MonoBehaviour
                 if (Physics.Raycast(ray, out hitInfo)){
                     Debug.Log("hit");
                     Debug.Log(hitInfo.point);
-                    if (hitInfo.collider.gameObject != waterPlane){
+                    if (hitInfo.collider != null){
                         rayPoint.transform.position = new Vector3(hitInfo.point.x, hitInfo.point.y, hitInfo.point.z);
-                        rayPoint.SetActive(true);
+                        if (hitInfo.collider.gameObject != waterPlane){
+                            rayPoint.GetComponent<Renderer>().material = rayPointActive;
+                            rayPoint.SetActive(true);
+                            if (Input.GetKeyDown(KeyCode.Mouse0)){
+                                forestGenerator.GrowTree(rayPoint.transform.position);
+                            }
+                        } else {
+                            if (Input.GetKeyDown(KeyCode.Mouse0)){
+                                music.clip = error;
+                                music.Play();
+                            }
+                            rayPoint.GetComponent<Renderer>().material = rayPointInactive;
+                        }
                     }
-                    if (Input.GetKeyDown(KeyCode.Mouse0)){
-                        forestGenerator.GrowTree(rayPoint.transform.position);
-                    }
+                        
+
+
                     
                 }
 
