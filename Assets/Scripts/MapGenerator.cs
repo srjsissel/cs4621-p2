@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using static ForestGenerator;
+using static AnimalGenerator;
+
 
 public class MapGenerator : MonoBehaviour {
 
