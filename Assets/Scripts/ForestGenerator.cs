@@ -42,7 +42,7 @@ public class ForestGenerator : MonoBehaviour {
         // float elementHeight = randomElement.gameObject.transform.localScale.y;
         Vector3 rotation = new Vector3(Random.Range(0, 5f), Random.Range(0, 360f), Random.Range(0, 5f));
         float growScale = Random.Range(1.3f, 4f);
-        float scale = getTreeScale(growScale, scaleSlider) * Random.Range(3f, 4f);
+        float scale = Random.Range(3f, 4f);
         if (scale <= 0.1f){
             randomElement = elements[1].GetRandom();
             newElement = Instantiate(randomElement);
@@ -74,7 +74,7 @@ public class ForestGenerator : MonoBehaviour {
 
         // Instantiate and place element in world.
 
-        StartCoroutine(Scale(newElement, scale * scaleSlider));
+        StartCoroutine(Scale(newElement, getTreeScale(growScale, scaleSlider) * scale));
         music.clip = growTree;
         music.Play();
     }
