@@ -54,6 +54,8 @@ public class ForestGenerator : MonoBehaviour {
             newElement.transform.localScale = Vector3.zero;
             newElement.transform.eulerAngles = rotation;
             newElement.transform.position = position;
+            newElement.AddComponent<MeshCollider>();
+            newElement.tag = "Plant";
 
         } else {
             randomElement = elements[0].GetRandom();
@@ -66,6 +68,8 @@ public class ForestGenerator : MonoBehaviour {
             newElement.transform.localScale = Vector3.zero;
             newElement.transform.eulerAngles = rotation;
             newElement.transform.position = position;
+            newElement.AddComponent<MeshCollider>();
+            newElement.tag = "Plant";
         } 
 
         // Instantiate and place element in world.
@@ -75,6 +79,20 @@ public class ForestGenerator : MonoBehaviour {
         music.Play();
     }
 
+    public void RemoveTree(GameObject tree){
+        tree.tag = "Removed";
+        StartCoroutine(Shrink(tree));
+    }
+
+    IEnumerator Shrink(GameObject element){
+        while(element.transform.localScale.x > 0)
+        {
+            element.transform.localScale -= new Vector3(1, 1, 1) * Time.deltaTime * 1.5f;
+            yield return null;
+        }
+    }
+
+
     IEnumerator Scale(GameObject element, float maxSize){
         float timer = 0;
  
@@ -82,8 +100,6 @@ public class ForestGenerator : MonoBehaviour {
         // so we can work with a float instead of comparing vectors
         while(maxSize > element.transform.localScale.x)
         {
-            if (element.transform.localScale.x > maxSize)
-                break;
             timer += Time.deltaTime;
             element.transform.localScale += new Vector3(1, 1, 1) * Time.deltaTime * 1.5f;
             yield return null;
@@ -153,6 +169,8 @@ public class ForestGenerator : MonoBehaviour {
                         newElement.transform.localScale = Vector3.one * scale;
                         newElement.transform.eulerAngles = rotation;
                         newElement.transform.position = position + offset;
+                        newElement.AddComponent<MeshCollider>();
+                        newElement.tag = "Plant";
 
                         // Renderer renderer = newElement.GetComponent<Renderer>();
                         // renderer.sharedMaterial = materials[0];
@@ -225,6 +243,8 @@ public class ForestGenerator : MonoBehaviour {
         scaleSlider = newScale;
         for (int i=0; i<objectList.Count; ++i){
             GameObject o = objectList[i];
+            if (o.tag == "Removed")
+                continue;
             int oType = objectTypeList[i];
             float tempScale = newScale;
             float growScale = objectGrowScaleList[i];
