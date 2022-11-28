@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using static ForestGenerator;
+using static AnimalGenerator;
+
 
 public class MapGenerator : MonoBehaviour {
 
@@ -50,8 +52,10 @@ public class MapGenerator : MonoBehaviour {
 		noiseMap = addFalloff(noiseMap);
 		heightMap = GenerateMap();
 		ForestGenerator forestGenerator = GameObject.Find("ForestGenerator").GetComponent<ForestGenerator>();
+		AnimalGenerator animalGenerator = GameObject.Find("AnimalGenerator").GetComponent<AnimalGenerator>();
 		waterPlane = GameObject.Find("Water Plane");
 		forestGenerator.GenerateForest(ref heightMap);
+		animalGenerator.GenerateAnimals(ref heightMap);
 	}
 
 	public float[,] GenerateMap() {

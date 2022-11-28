@@ -39,25 +39,25 @@ public class MovementInput : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		anim = this.GetComponent<Animator> ();
-		cam = Camera.main;
-		controller = this.GetComponent<CharacterController> ();
+		// cam = Camera.main;
+		// controller = this.GetComponent<CharacterController> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		InputMagnitude ();
 
-        isGrounded = controller.isGrounded;
-        if (isGrounded)
-        {
-            verticalVel -= 0;
-        }
-        else
-        {
-            verticalVel -= 1;
-        }
-        moveVector = new Vector3(0, verticalVel * .2f * Time.deltaTime, 0);
-        controller.Move(moveVector);
+        // isGrounded = controller.isGrounded;
+        // if (isGrounded)
+        // {
+        //     verticalVel -= 0;
+        // }
+        // else
+        // {
+        //     verticalVel -= 1;
+        // }
+        // moveVector = new Vector3(0, verticalVel * .2f * Time.deltaTime, 0);
+        // controller.Move(moveVector);
 
 
     }

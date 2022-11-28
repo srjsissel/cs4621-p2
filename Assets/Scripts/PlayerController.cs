@@ -64,18 +64,23 @@ public class PlayerController : MonoBehaviour
                     Debug.Log(hitInfo.point);
                     if (hitInfo.collider != null){
                         rayPoint.transform.position = new Vector3(hitInfo.point.x, hitInfo.point.y, hitInfo.point.z);
-                        if (hitInfo.collider.gameObject != waterPlane){
-                            rayPoint.GetComponent<Renderer>().material = rayPointActive;
-                            rayPoint.SetActive(true);
-                            if (Input.GetKeyDown(KeyCode.Mouse0)){
-                                forestGenerator.GrowTree(rayPoint.transform.position);
-                            }
-                        } else {
+                        if (hitInfo.collider.gameObject == waterPlane){
                             if (Input.GetKeyDown(KeyCode.Mouse0)){
                                 music.clip = error;
                                 music.Play();
                             }
                             rayPoint.GetComponent<Renderer>().material = rayPointInactive;
+                        } else if (hitInfo.collider.gameObject.tag == "Plant"){
+                            if (Input.GetKeyDown(KeyCode.Mouse0)){
+                                forestGenerator.RemoveTree(hitInfo.collider.gameObject);
+                            }
+                            rayPoint.GetComponent<Renderer>().material = rayPointActive;
+                        } else {
+                            rayPoint.GetComponent<Renderer>().material = rayPointActive;
+                            rayPoint.SetActive(true);
+                            if (Input.GetKeyDown(KeyCode.Mouse0)){
+                                forestGenerator.GrowTree(rayPoint.transform.position);
+                            }
                         }
                     }
                         
