@@ -8,6 +8,7 @@ TagManager:
   - PlayerEyes
   - Plant
   - Removed
+  - Mesh
   layers:
   - Default
   - TransparentFX

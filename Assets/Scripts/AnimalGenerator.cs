@@ -11,15 +11,42 @@ public class AnimalGenerator : MonoBehaviour
     public Material[] materials;
 
     List<GameObject> objectList;
+    List<int> idleTimeList;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Debug.Log("hiiii");
+    }
+
+    void FixedUpdate(){
+        System.Random r = new System.Random();
+        for (int i=0;i<objectList.Count;i++){
+            GameObject o = objectList[i];
+            if(idleTimeList[i]==0){
+                if(r.Next(1,1001)<5){
+                    idleTimeList[i] = r.Next(180,600);
+                    o.transform.Rotate(0,r.Next(-150,150),0);
+                }
+            }else{
+                if(i==0){
+                    Debug.Log(o.transform.position);
+                }
+                // o.transform.Translate(Vector3.forward * 0.1f);
+                o.GetComponent<Rigidbody>().MovePosition(o.GetComponent<Transform>().position + o.GetComponent<Transform>().forward * 0.1f);
+                idleTimeList[i] = idleTimeList[i] - 1;
+                // o.transform.Translate(Vector3.down, Space.World);
+                if(i==0){
+                    Debug.Log(o.transform.position);
+                }
+            }
+            
+        }
     }
 
     public void GenerateAnimals(ref float[,] heightMap){
         objectList = new List<GameObject>();
+        idleTimeList = new List<int>();
         int width = heightMap.GetLength(0);
         int height = heightMap.GetLength(1);
 
@@ -68,8 +95,9 @@ public class AnimalGenerator : MonoBehaviour
                         // Instantiate and place element in world.
                         GameObject newElement = Instantiate(randomElement);
                         objectList.Add(newElement);
+                        idleTimeList.Add(0);
                         newElement.transform.SetParent(transform);
-                        newElement.transform.localScale = Vector3.one * scale;
+                        newElement.transform.localScale = Vector3.one * scale * 100;
                         newElement.transform.eulerAngles = rotation;
                         newElement.transform.position = position + offset;
 
