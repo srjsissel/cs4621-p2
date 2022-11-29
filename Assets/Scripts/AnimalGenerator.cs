@@ -12,16 +12,19 @@ public class AnimalGenerator : MonoBehaviour
 
     List<GameObject> objectList;
     List<int> idleTimeList;
+    List<bool> typeList; 
 
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("hiiii");
     }
 
     void FixedUpdate(){
         System.Random r = new System.Random();
         for (int i=0;i<objectList.Count;i++){
+            if(typeList[i]!=0){
+                continue;
+            }
             GameObject o = objectList[i];
             if(idleTimeList[i]==0){
                 if(r.Next(1,1001)<5){
@@ -96,6 +99,7 @@ public class AnimalGenerator : MonoBehaviour
                         GameObject newElement = Instantiate(randomElement);
                         objectList.Add(newElement);
                         idleTimeList.Add(0);
+                        typeList.Add(i);
                         newElement.transform.SetParent(transform);
                         newElement.transform.localScale = Vector3.one * scale * 100;
                         newElement.transform.eulerAngles = rotation;
