@@ -9,6 +9,7 @@ TagManager:
   - Plant
   - Removed
   - Mesh
+  - Animal
   layers:
   - Default
   - TransparentFX

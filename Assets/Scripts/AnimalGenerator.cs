@@ -12,7 +12,7 @@ public class AnimalGenerator : MonoBehaviour
 
     List<GameObject> objectList;
     List<int> idleTimeList;
-    List<bool> typeList; 
+    List<int> typeList; 
 
     // Start is called before the first frame update
     void Start()
@@ -104,6 +104,7 @@ public class AnimalGenerator : MonoBehaviour
                         newElement.transform.localScale = Vector3.one * scale * 100;
                         newElement.transform.eulerAngles = rotation;
                         newElement.transform.position = position + offset;
+                        newElement.tag = "Animal";
 
                     }
 

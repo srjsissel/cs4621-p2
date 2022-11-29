@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
     public AudioSource music;
     public AudioClip error;
 
+    public ParticleSystem fire;
+
 
     void Start()
     {
@@ -45,6 +47,7 @@ public class PlayerController : MonoBehaviour
         music = this.gameObject.AddComponent<AudioSource>();
         music.playOnAwake = false;
         error = Resources.Load<AudioClip>("music/error");
+        fire.Stop();
     }
 
     void Update()
@@ -65,13 +68,15 @@ public class PlayerController : MonoBehaviour
                     if (hitInfo.collider != null){
                         rayPoint.transform.position = new Vector3(hitInfo.point.x, hitInfo.point.y, hitInfo.point.z);
                         if (hitInfo.collider.gameObject == waterPlane){
-                            if (Input.GetKeyDown(KeyCode.Mouse0)){
+                            if (Input.GetKeyDown(KeyCode.Mouse0) || hitInfo.collider.gameObject.tag == "Animal"){
                                 music.clip = error;
                                 music.Play();
                             }
                             rayPoint.GetComponent<Renderer>().material = rayPointInactive;
                         } else if (hitInfo.collider.gameObject.tag == "Plant"){
                             if (Input.GetKeyDown(KeyCode.Mouse0)){
+                                fire.transform.position = hitInfo.collider.gameObject.transform.position;
+                                fire.Play();
                                 forestGenerator.RemoveTree(hitInfo.collider.gameObject);
                             }
                             rayPoint.GetComponent<Renderer>().material = rayPointActive;
