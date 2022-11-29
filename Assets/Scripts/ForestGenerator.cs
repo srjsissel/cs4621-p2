@@ -169,7 +169,8 @@ public class ForestGenerator : MonoBehaviour {
                         newElement.transform.localScale = Vector3.one * scale;
                         newElement.transform.eulerAngles = rotation;
                         newElement.transform.position = position + offset;
-                        newElement.AddComponent<MeshCollider>();
+                        if (i == 0) // newElement is tree
+                            newElement.AddComponent<MeshCollider>();
                         newElement.tag = "Plant";
 
                         // Renderer renderer = newElement.GetComponent<Renderer>();
