@@ -12,7 +12,7 @@ public class AnimalGenerator : MonoBehaviour
 
     List<GameObject> objectList;
     List<int> idleTimeList;
-    List<bool> typeList; 
+    List<int> typeList; 
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +50,7 @@ public class AnimalGenerator : MonoBehaviour
     public void GenerateAnimals(ref float[,] heightMap){
         objectList = new List<GameObject>();
         idleTimeList = new List<int>();
+        typeList = new List<int>();
         int width = heightMap.GetLength(0);
         int height = heightMap.GetLength(1);
 
@@ -102,6 +103,9 @@ public class AnimalGenerator : MonoBehaviour
                         typeList.Add(i);
                         newElement.transform.SetParent(transform);
                         newElement.transform.localScale = Vector3.one * scale * 100;
+                        if(i!=0){
+                            newElement.transform.localScale = Vector3.one * scale;
+                        }
                         newElement.transform.eulerAngles = rotation;
                         newElement.transform.position = position + offset;
 
