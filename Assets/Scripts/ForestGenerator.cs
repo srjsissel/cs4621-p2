@@ -90,6 +90,12 @@ public class ForestGenerator : MonoBehaviour {
             element.transform.localScale -= new Vector3(1, 1, 1) * Time.deltaTime * 1.5f;
             yield return null;
         }
+        // while(element.GetComponent<Renderer>().material.color.a > 0){
+        //     element.GetComponent<Renderer>().material.color = 
+        //         new Color(element.GetComponent<Renderer>().material.color.r, element.GetComponent<Renderer>().material.color.g,
+        //         element.GetComponent<Renderer>().material.color.b, element.GetComponent<Renderer>().material.color.a - 0.01f);
+        //     yield return null;
+        // }
     }
 
 
