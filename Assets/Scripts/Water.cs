@@ -6,7 +6,6 @@ public class Water : MonoBehaviour
 {
     public AudioSource music;
     public AudioClip swimAudio;    
-    private Animator anim;
 
     private void Start(){
         music = this.gameObject.AddComponent<AudioSource>();
@@ -17,11 +16,10 @@ public class Water : MonoBehaviour
     private void OnTriggerEnter(Collider other){
         if (other.CompareTag("Player")) {
             PlayerController controller = other.GetComponent<PlayerController>();
-            anim = other.gameObject.GetComponentsInChildren<Animator>()[0];
-
+            Animator anim = other.gameObject.GetComponentsInChildren<Animator>()[0];
             controller.playerControl = PlayerController.Control.Swim;   
             if (!anim.GetBool("swim")) {anim.SetTrigger("swim");}
-
+            Debug.Log("set to swim");
             music.clip = swimAudio;
             music.loop = true;
             music.Play();
@@ -32,8 +30,9 @@ public class Water : MonoBehaviour
         if (other.CompareTag("Player")) {
             PlayerController controller = other.GetComponent<PlayerController>();
             controller.playerControl = PlayerController.Control.Walk;
-            anim = other.gameObject.GetComponentsInChildren<Animator>()[0];
-            anim.SetTrigger("normal");
+            Animator anim = other.gameObject.GetComponentsInChildren<Animator>()[0];
+            if (!anim.GetBool("normal")) {anim.SetTrigger("normal");}
+            Debug.Log("set to normal");
             music.Stop();
         }
     }

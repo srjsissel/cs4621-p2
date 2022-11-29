@@ -69,7 +69,7 @@ public class AnimalGenerator : MonoBehaviour
                         GameObject newElement = Instantiate(randomElement);
                         objectList.Add(newElement);
                         newElement.transform.SetParent(transform);
-                        newElement.transform.localScale = Vector3.one * scale * 100;
+                        newElement.transform.localScale = Vector3.one * scale;
                         newElement.transform.eulerAngles = rotation;
                         newElement.transform.position = position + offset;
 

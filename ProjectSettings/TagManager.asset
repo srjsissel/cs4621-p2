@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - PlayerEyes
+  - Plant
+  - Removed
   layers:
   - Default
   - TransparentFX
