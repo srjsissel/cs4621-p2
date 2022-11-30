@@ -25,10 +25,10 @@ public class PlayerController : MonoBehaviour
     public GameObject thirdPersonCam;
     public GameObject flyCam;
 
-    public Material rayPointActive, rayPointInactive;
+    public Material rayPointActive, rayPointInactive, rayPointPlant;
 
     public AudioSource music;
-    public AudioClip error;
+    public AudioClip error, burn;
 
     public ParticleSystem fire;
 
@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
         music = this.gameObject.AddComponent<AudioSource>();
         music.playOnAwake = false;
         error = Resources.Load<AudioClip>("music/error");
+        burn = Resources.Load<AudioClip>("music/burn");
         fire.Stop();
     }
 
@@ -78,8 +79,10 @@ public class PlayerController : MonoBehaviour
                                 fire.transform.position = hitInfo.collider.gameObject.transform.position;
                                 fire.Play();
                                 forestGenerator.RemoveTree(hitInfo.collider.gameObject);
+                                music.clip = burn;
+                                music.Play();
                             }
-                            rayPoint.GetComponent<Renderer>().material = rayPointActive;
+                            rayPoint.GetComponent<Renderer>().material = rayPointPlant;
                         } else {
                             rayPoint.GetComponent<Renderer>().material = rayPointActive;
                             rayPoint.SetActive(true);
